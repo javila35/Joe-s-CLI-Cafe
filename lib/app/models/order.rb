@@ -1,3 +1,3 @@
-class Order < ActiveRecord::Migration
+class Order < ActiveRecord::Base
     
 end
