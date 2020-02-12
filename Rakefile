@@ -11,6 +11,7 @@ end
 
 desc 'starts a console'
 task :console do
-  ActiveRecord::Base.logger = Logger.new(STDOUT)
-  Pry.start
+  # ActiveRecord::Base.logger = Logger.new(STDOUT)
+  # Pry.start
+  sh 'ruby bin/run.rb'
 end

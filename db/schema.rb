@@ -14,7 +14,6 @@ ActiveRecord::Schema.define(version: 3) do
 
   create_table "customers", force: :cascade do |t|
     t.string "name"
-    t.boolean "patient?"
   end
 
   create_table "drinks", force: :cascade do |t|

@@ -13,7 +13,7 @@
 
 ## Tomorrow's Goals 2/12/2020
     - Create methods
-        - [ ] Customer is see all their drink options. **Read**
+        - [x] Customer is see all their drink options. **Read**
         - [ ] Customer is able to order a drink. **Create**
         - [x] Customer should be able to change their order *if it isn't finished*(stretch goal). **Update**
         - [ ] Customer can see a description for the drip coffee or espresso. **Read**
@@ -24,3 +24,4 @@
         -Utilize sleep feature to delay output. Give customer the option to cancel their order if its taking more then 10 seconds.
     - Puts out an image of the type of drink it is.
     - Customers have a preffered drink. (Random creation with seed.)
+    - Use Rainbow gem to colorize output.
