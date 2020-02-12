@@ -6,6 +6,11 @@ class Customer < ActiveRecord::Base
         Drink.list_the_options
     end
 
+    def learn_about_coffee
+        str = "Hello, #{self.name}. " + "#{Drink.learn_about_coffee}"
+        puts str
+    end
+
     def order_drink(coffee, milk=nil, flavor=nil)
         order = Drink.create(type_of_coffee:coffee, milk: milk, flavor: flavor)
         puts "I've got a #{order.type_of_coffee} for #{self.name}."

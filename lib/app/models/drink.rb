@@ -6,6 +6,7 @@ class Drink < ActiveRecord::Base
     @@coffees = ["Espresso", "Drip Coffee", "Latte", "Macchiato", "Tea", "Cold Brew", "Chai Tea"]
     @@flavors = ["Vanilla", "Chocolate", "Cinnamon", "Lavender"]
 
+#making readers for arrays containing drink options.
     def self.milks
         @@milks
     end
@@ -18,6 +19,7 @@ class Drink < ActiveRecord::Base
         @@flavors
     end
 
+#methods that make it so customers can see all the options, or specific options (milk, coffees, flavors)
     def self.list_the_options
         str = ""
         @@coffees.each do |coffee| 
@@ -86,6 +88,7 @@ class Drink < ActiveRecord::Base
         p "Your flavor options are: #{str}"
     end
 
+#methods so customers can change their options.
     def change_milk(option)
         self[:milk] = (@@milks.select{|milk| milk == option}).first
     end
@@ -96,5 +99,11 @@ class Drink < ActiveRecord::Base
 
     def change_flavor(option)
         self[:flavor] = (@@flavors.select{|flavor| flavor == option})
+    end
+
+#methods so customers can learn about the coffee options
+    def self.learn_about_coffee
+        str = "Today's Drip Coffee is #{Faker::Coffee.blend_name}. It is a #{Faker::Coffee.intensifier} blend, containing beans from #{Faker::Coffee.origin}."
+        str
     end
 end
