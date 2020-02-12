@@ -4,7 +4,6 @@ class CreateDrinksTable < ActiveRecord::Migration[5.2]
             t.string :type_of_coffee
             t.string :milk
             t.string :flavor
-            t.integer :make_time
         end
     end
 end
