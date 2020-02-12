@@ -1,10 +1,22 @@
 class Drink < ActiveRecord::Base
     has_many :orders
     has_many :customers, through: :orders
-    
+
     @@milks = ["Soy Milk", "Almond Milk", "Oat Milk", "Whole Milk", "2% Milk", "Nonfat", "Half & Half"]
     @@coffees = ["Espresso", "Drip Coffee", "Latte", "Macchiato", "Tea", "Cold Brew", "Chai Tea"]
     @@flavors = ["Vanilla", "Chocolate", "Cinnamon", "Lavender"]
+
+    def self.milks
+        @@milks
+    end
+    
+    def self.coffees
+        @@coffees
+    end
+
+    def self.flavors
+        @@flavors
+    end
 
     def self.list_the_options
         str = ""
@@ -26,7 +38,7 @@ class Drink < ActiveRecord::Base
                     str += "#{milk}, "
                 end
             end
-        flavor_options = @@flavors.each do |flavors| 
+        @@flavors.each do |flavors| 
             if flavors == @@flavors[-1]
                 str += "and #{flavors}."
             elsif flavors == @@flavors[0]
