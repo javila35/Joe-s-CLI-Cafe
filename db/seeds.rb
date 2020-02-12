@@ -1,5 +1,4 @@
 require_relative '../config/environment.rb'
-require 'pry'
 
 # Seed data for Customers.
 dinasours = ["Aidan","Chris","Clarion","David","Diana","Jazz","Johnny","Joe","Kailana","Kevin","Lief","Matt","Kim","Soundarya","Zeb","Gabriel","Hal","Jack"]

@@ -11,7 +11,11 @@ end
 
 desc 'starts a console'
 task :console do
-  # ActiveRecord::Base.logger = Logger.new(STDOUT)
-  # Pry.start
   sh 'ruby bin/run.rb'
 end
+
+# desc 'Runs an interactive tutorial.'
+# task :test do
+#   [:console]
+#   sh 'Customer.visit'
+# end

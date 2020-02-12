@@ -13,21 +13,16 @@ class Customer < ActiveRecord::Base
 
     def order_drink(coffee, milk=nil, flavor=nil)
         order = Drink.create(type_of_coffee:coffee, milk: milk, flavor: flavor)
-        puts "I've got a #{order.type_of_coffee} for #{self.name}."
         Order.create(customer_id: self.id, drink_id: order.id)
+        puts Rainbow("I've got a #{order.type_of_coffee} for #{self.name}.").purple.underline
+    end
+
+    def find_my_orders
+        order = Order.find_by(customer_id: self.id)
     end
 
     def cancel_order
-        order = Order.find_by(customer_id: self.id)
-        binding.pry
+        order = self.find_my_orders
         order.destroy
-    end
-
-    def Customer.order_drink
-        puts "Hi, welcome to Joe's Cafe. What can I get you?"
-        drink = gets.chomp
-        puts "Great would you like any milk with your #{drink}."
-
-        # Drink.create(type_of_coffee: coffee, milk: milk, flavor: flavor)
     end
 end
