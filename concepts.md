@@ -15,9 +15,9 @@
     - Create methods
         - [ ] Customer is see all their drink options. **Read**
         - [ ] Customer is able to order a drink. **Create**
-        - [ ] Customer should be able to change their order *if it isn't finished*(stretch goal). **Update**
-        - [ ] Customer can see how long a drink combination would take. **Read**
-        - [ ] Customer can cancel their order if they're impatient. **Delete**
+        - [x] Customer should be able to change their order *if it isn't finished*(stretch goal). **Update**
+        - [ ] Customer can see a description for the drip coffee or espresso. **Read**
+        - [ ] Customer can cancel their order *if they're impatient* (stretch goal). **Delete**
 
 ## Stretch Goals 
     - Drinks have a make time.
