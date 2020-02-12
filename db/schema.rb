@@ -22,9 +22,9 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "flavor"
   end
 
-  create_table "orders", id: false, force: :cascade do |t|
-    t.integer "customer_id", null: false
-    t.integer "drink_id", null: false
+  create_table "orders", force: :cascade do |t|
+    t.integer "customer_id"
+    t.integer "drink_id"
   end
 
 end

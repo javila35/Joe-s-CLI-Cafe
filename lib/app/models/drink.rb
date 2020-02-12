@@ -103,7 +103,7 @@ class Drink < ActiveRecord::Base
 
 #methods so customers can learn about the coffee options
     def self.learn_about_coffee
-        str = "Today's Drip Coffee is #{Faker::Coffee.blend_name}. It is a #{Faker::Coffee.intensifier} blend, containing beans from #{Faker::Coffee.origin}."
+        str = "Today's Drip Coffee is #{Faker::Coffee.blend_name}. The beans are from #{Faker::Coffee.origin} with notes like #{Faker::Coffee.notes}."
         str
     end
 end

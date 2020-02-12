@@ -9,19 +9,18 @@
     - Create seed data.
         -[x] Seed Customers
         -[x] Seed Drinks
-        -[ ] Seed orders
+        -[x] Seed orders
 
 ## Tomorrow's Goals 2/12/2020
     - Create methods
         - [x] Customer is see all their drink options. **Read**
-        - [ ] Customer is able to order a drink. **Create**
+        - [x] Customer is able to order a drink. **Create**
         - [x] Customer should be able to change their order *if it isn't finished*(stretch goal). **Update**
-        - [ ] Customer can see a description for the drip coffee or espresso. **Read**
-        - [ ] Customer can cancel their order *if they're impatient* (stretch goal). **Delete**
+        - [x] Customer can see a description for the drip coffee. **Read**
+        - [x] Customer can cancel their order. **Delete**
 
 ## Stretch Goals 
     - Drinks have a make time.
         -Utilize sleep feature to delay output. Give customer the option to cancel their order if its taking more then 10 seconds.
     - Puts out an image of the type of drink it is.
-    - Customers have a preffered drink. (Random creation with seed.)
     - Use Rainbow gem to colorize output.

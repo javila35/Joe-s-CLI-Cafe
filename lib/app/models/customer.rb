@@ -14,6 +14,13 @@ class Customer < ActiveRecord::Base
     def order_drink(coffee, milk=nil, flavor=nil)
         order = Drink.create(type_of_coffee:coffee, milk: milk, flavor: flavor)
         puts "I've got a #{order.type_of_coffee} for #{self.name}."
+        Order.create(customer_id: self.id, drink_id: order.id)
+    end
+
+    def cancel_order
+        order = Order.find_by(customer_id: self.id)
+        binding.pry
+        order.destroy
     end
 
     def Customer.order_drink

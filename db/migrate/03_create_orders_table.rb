@@ -1,7 +1,8 @@
 class CreateOrdersTable < ActiveRecord::Migration[5.2]
     def change
-        create_join_table :customers, :drinks, table_name: :orders do |t|
-            
+        create_table :orders do |t|
+            t.integer :customer_id
+            t.integer :drink_id
         end
     end
 end
