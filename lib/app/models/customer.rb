@@ -3,20 +3,8 @@ require "tty-prompt"
 class Customer < ActiveRecord::Base
     has_many :orders
     has_many :drinks, through: :orders
-    
-    def see_the_options
-        Drink.list_the_options
-    end
 
-    def learn_about_coffee
-        puts "#{Drink.learn_about_coffee}"
-    end
-
-    def cancel_order
-        order = self.find_my_orders
-        order.destroy
-    end
-
+#when rake run is typed into terminal this method is called and begins an interactive ordering process.
     def self.begin_visit
         prompt = TTY::Prompt.new
         puts "Welcome to Joe's Cafe!"
@@ -37,7 +25,7 @@ class Customer < ActiveRecord::Base
         if a 
             self.make_drink
         else
-            self.see_the_options
+            Drink.list_the_options
             b = prompt.yes?("Can I get you anything?")
             if b 
                 self.make_drink
@@ -55,7 +43,7 @@ class Customer < ActiveRecord::Base
         if selection == "Espresso" || selection == "Drip Coffee"
             bean_offering = prompt.yes?("#{self.name}, would you like to hear about our beans?")
             if bean_offering
-                self.learn_about_coffee
+                Drink.learn_about_coffee
             end
         end
         if selection == "Latte" || selection == "Macchiato"
