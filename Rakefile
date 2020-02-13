@@ -11,10 +11,11 @@ end
 
 desc 'starts a console'
 task :console do
-  sh 'ruby bin/run.rb'
+  Pry.start
 end
 
 desc 'Runs an interactive tutorial.'
-task :test do
+task :run do
   [:console]
+  sh 'ruby bin/run.rb'
 end

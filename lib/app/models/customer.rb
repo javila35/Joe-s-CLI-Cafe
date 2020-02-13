@@ -12,47 +12,37 @@ class Customer < ActiveRecord::Base
         puts "#{Drink.learn_about_coffee}"
     end
 
-    def order_drink(coffee, milk=nil, flavor=nil)
-        order = Drink.create(type_of_coffee:coffee, milk: milk, flavor: flavor)
-        Order.create(customer_id: self.id, drink_id: order.id)
-        puts Rainbow("I've got a #{order.type_of_coffee} for #{self.name}.").purple.underline
-    end
-
     def cancel_order
         order = self.find_my_orders
         order.destroy
     end
 
-    def self.welcome
-        'https://i.imgur.com/OaM4C12.jpeg'
-    end
-
     def self.begin_visit
         prompt = TTY::Prompt.new
-        Customer.welcome
+        puts "Welcome to Joe's Cafe!"
         name = prompt.ask("What's your name?")
         Customer.create(name: name)
         customer = Customer.find_by(name: name)
         response = prompt.yes?("#{name}, would you like something to drink?")
         if response
-            Customer.prompt_order(customer)
+            customer.prompt_order
         else
             customer.goodbye
         end
     end
 
-    def self.prompt_order(customer)
+    def prompt_order
         prompt = TTY::Prompt.new
         a = prompt.yes?("Do you know what you'd like?")
         if a 
-            customer.make_drink
+            self.make_drink
         else
-            customer.see_the_options
+            self.see_the_options
             b = prompt.yes?("Can I get you anything?")
             if b 
-                customer.make_drink
+                self.make_drink
             else
-                customer.goodbye
+                self.goodbye
             end
         end
     end
@@ -88,6 +78,26 @@ class Customer < ActiveRecord::Base
 
     def confirm_order(drink)
         prompt = TTY::Prompt.new
+        change_drink = prompt.yes?("Would you like to change any of your choices?")
+        if change_drink
+            edit = prompt.select("Sure, what would you like to change?") do |menu|
+                menu.help 'Wow this person is really needy...'
+                menu.choice 'Coffee', 0
+                menu.choice 'Milk', 1
+                menu.choice 'Flavor', 2
+                menu.choice 'Nevermind', echo: false
+            end
+            if edit == 0
+                coffee = prompt.ask("What would you like?")
+                drink.change_coffee(coffee)
+            elsif edit == 1
+                milk = prompt.ask("What would you like?")
+                drink.change_milk(milk)
+            elsif edit == 2
+                flavor = prompt.ask("What would you like?")
+                drink.change_flavor(flavor)
+            end
+        end
         if drink.milk == nil && drink.flavor == nil
             confirm = prompt.yes?("I have a #{drink.type_of_coffee}. Is that right?")
         elsif drink.milk == nil && drink.flavor
@@ -124,7 +134,6 @@ class Customer < ActiveRecord::Base
         puts str
     end
 
-    
     def goodbye
         puts "Thanks for coming, #{self.name}! Have a good day."
     end
