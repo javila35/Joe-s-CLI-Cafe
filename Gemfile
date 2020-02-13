@@ -8,3 +8,4 @@ gem "pry"
 gem "require_all"
 gem "faker"
 gem "rainbow"
+gem 'tty-prompt'

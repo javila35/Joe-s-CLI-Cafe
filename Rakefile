@@ -14,8 +14,7 @@ task :console do
   sh 'ruby bin/run.rb'
 end
 
-# desc 'Runs an interactive tutorial.'
-# task :test do
-#   [:console]
-#   sh 'Customer.visit'
-# end
+desc 'Runs an interactive tutorial.'
+task :test do
+  [:console]
+end
