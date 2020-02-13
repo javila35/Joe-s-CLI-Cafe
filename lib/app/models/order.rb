@@ -3,7 +3,6 @@ class Order < ActiveRecord::Base
     belongs_to :drink
     
     def info
-        str = "#{Rainbow(self.customer.name).blue} " + "ordered a" + " #{Rainbow(self.drink.type_of_coffee).brown.bright}."
-        puts str
+        puts Rainbow("#{self.customer.name} ordered a #{self.drink.type_of_coffee}.").green
     end
 end

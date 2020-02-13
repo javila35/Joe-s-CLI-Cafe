@@ -1,6 +1,5 @@
-require "tty-prompt"
-
 class Customer < ActiveRecord::Base
+    attr_accessor :todays_drinks
     has_many :orders
     has_many :drinks, through: :orders
 
@@ -101,9 +100,11 @@ class Customer < ActiveRecord::Base
             remake = prompt.yes?("Alright, will you let us try to get it right?")
             if remake
                 Drink.destroy(drink.id)
+                puts Rainbow("You're #{drink.type_of_coffee} was cancelled.").red
                 self.make_drink
             else
                 Drink.destroy(drink.id)
+                puts Rainbow("Your #{drink.type_of_coffee} was cancelled.").red
                 self.goodbye
             end
         end
@@ -111,19 +112,18 @@ class Customer < ActiveRecord::Base
     
     def confirmed_order(drink)
         order = Order.create(customer_id: self.id, drink_id: drink.id)
-        str = "Order number #{order.id} is ready! Enjoy your "
-        if drink.milk
-            str += "#{drink.milk} "
-        end
-        if drink.flavor
-            str += "#{drink.flavor} "
-        end
-        str += "#{drink.type_of_coffee}."
-        puts str
+        order.info
+        self.goodbye
     end
 
     def goodbye
-        puts "Thanks for coming, #{self.name}! Have a good day."
+        prompt = TTY::Prompt.new
+        confirm = prompt.yes?("Can we get you anything else?")
+        if confirm
+            self.prompt_order
+        else
+            puts Rainbow("Thanks for coming, #{self.name}! Have a good day.").green
+        end
     end
 
 end

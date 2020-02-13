@@ -6,7 +6,6 @@ desc 'resets database'
 task :reset do
   sh 'rake db:rollback STEP=3'
   sh 'rake db:migrate'
-  sh 'rake db:seed'
 end
 
 desc 'starts a console'
@@ -16,6 +15,5 @@ end
 
 desc 'Runs an interactive tutorial.'
 task :run do
-  [:console]
   sh 'ruby bin/run.rb'
 end
