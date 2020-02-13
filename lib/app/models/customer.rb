@@ -23,9 +23,13 @@ class Customer < ActiveRecord::Base
         order.destroy
     end
 
+    def self.welcome
+        'https://i.imgur.com/OaM4C12.jpeg'
+    end
+
     def self.begin_visit
         prompt = TTY::Prompt.new
-        puts "Welcome to Joe's Cafe."
+        Customer.welcome
         name = prompt.ask("What's your name?")
         Customer.create(name: name)
         customer = Customer.find_by(name: name)
@@ -54,7 +58,7 @@ class Customer < ActiveRecord::Base
     end
 
     def make_drink
-        prompt = TTY::Prompt.new
+        prompt = TTY::Prompt.new(symbols: {marker: '→'})
         selection = prompt.select("Choose your coffee:", Drink.coffees)
         drink = Drink.create(type_of_coffee: selection)
         drink.id
@@ -109,7 +113,15 @@ class Customer < ActiveRecord::Base
     
     def confirmed_order(drink)
         order = Order.create(customer_id: self.id, drink_id: drink.id)
-        puts "Order number #{order.id} is ready! Enjoy your #{drink.milk} #{drink.flavor} #{drink.type_of_coffee}."
+        str = "Order number #{order.id} is ready! Enjoy your "
+        if drink.milk
+            str += "#{drink.milk} "
+        end
+        if drink.flavor
+            str += "#{drink.flavor} "
+        end
+        str += "#{drink.type_of_coffee}."
+        puts str
     end
 
     
