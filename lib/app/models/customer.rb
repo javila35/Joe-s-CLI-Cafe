@@ -65,26 +65,6 @@ class Customer < ActiveRecord::Base
 
     def confirm_order(drink)
         prompt = TTY::Prompt.new
-        change_drink = prompt.yes?("Would you like to change any of your choices?")
-        if change_drink
-            edit = prompt.select("Sure, what would you like to change?") do |menu|
-                menu.help 'Wow this person is really needy...'
-                menu.choice 'Coffee', 0
-                menu.choice 'Milk', 1
-                menu.choice 'Flavor', 2
-                menu.choice 'Nevermind', echo: false
-            end
-            if edit == 0
-                coffee = prompt.ask("What would you like?")
-                drink.change_coffee(coffee)
-            elsif edit == 1
-                milk = prompt.ask("What would you like?")
-                drink.change_milk(milk)
-            elsif edit == 2
-                flavor = prompt.ask("What would you like?")
-                drink.change_flavor(flavor)
-            end
-        end
         if drink.milk == nil && drink.flavor == nil
             confirm = prompt.yes?("I have a #{drink.type_of_coffee}. Is that right?")
         elsif drink.milk == nil && drink.flavor
@@ -93,6 +73,10 @@ class Customer < ActiveRecord::Base
             confirm = prompt.yes?("I have a #{drink.type_of_coffee} with #{drink.milk}. Is that right?")
         else
             confirm = prompt.yes?("I have a #{drink.flavor} #{drink.type_of_coffee} with #{drink.milk}. Is that right?")
+        end
+        change_drink = prompt.yes?("Would you like to change any of your choices?")
+        if change_drink
+            self.change_drink(drink)
         end
         if confirm
             self.confirmed_order(drink)
@@ -109,10 +93,32 @@ class Customer < ActiveRecord::Base
             end
         end
     end
+
+    def change_drink(drink)
+        prompt = TTY::Prompt.new
+        edit = prompt.select("Sure, what would you like to change?") do |menu|
+            menu.help 'Wow this person is really needy...'
+            menu.choice 'Coffee', 0
+            menu.choice 'Milk', 1
+            menu.choice 'Flavor', 2
+            menu.choice 'Nevermind', echo: false
+        end
+        if edit == 0
+            coffee = prompt.ask("What would you like?")
+            drink.change_coffee(coffee)
+        elsif edit == 1
+            milk = prompt.ask("What would you like?")
+            drink.change_milk(milk)
+        elsif edit == 2
+            flavor = prompt.ask("What would you like?")
+            drink.change_flavor(flavor)
+        end
+        self.confirm_order(drink)
+    end
     
     def confirmed_order(drink)
         order = Order.create(customer_id: self.id, drink_id: drink.id)
-        order.info
+        puts Rainbow("Order ##{order.id} for #{order.customer.name} is ready! A #{order.drink.type_of_coffee}.").green
         self.goodbye
     end
 

@@ -54,15 +54,15 @@ class Drink < ActiveRecord::Base
 
 #methods so customers can change their options.
     def change_milk(option)
-        self[:milk] = option
+        self.milk = option
     end
 
     def change_coffee(option)
-        self[:type_of_coffee] = option
+        self.type_of_coffee = option
     end
 
     def change_flavor(option)
-        self[:flavor] = option
+        self.flavor = option
     end
 
 #methods so customers can learn about the coffee options
