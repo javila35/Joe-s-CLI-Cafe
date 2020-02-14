@@ -58,7 +58,7 @@ class Drink < ActiveRecord::Base
     end
 
     def change_coffee(option)
-        self.type_of_coffee = option
+        self[:type_of_coffee] = option
     end
 
     def change_flavor(option)
@@ -67,7 +67,11 @@ class Drink < ActiveRecord::Base
 
 #methods so customers can learn about the coffee options
     def self.learn_about_coffee
-        str = "Today's Drip Coffee is #{Faker::Coffee.blend_name}. The beans are from #{Faker::Coffee.origin} with notes like #{Faker::Coffee.notes}."
-        puts str
+        prompt = TTY::Prompt.new
+        str = "Today's bean offering is #{Faker::Coffee.blend_name}. The beans are from #{Faker::Coffee.origin} with notes like #{Faker::Coffee.notes}."
+        bean_offering = prompt.yes?("Would you like to hear about our beans?")
+        if bean_offering
+            puts str
+        end
     end
 end
