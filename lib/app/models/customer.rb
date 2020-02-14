@@ -3,12 +3,12 @@ class Customer < ActiveRecord::Base
     has_many :orders
     has_many :drinks, through: :orders
 
-#when rake run is typed into terminal this method is called and begins an interactive ordering process.
+#CLI
     def self.welcome
         puts "Welcome to Joe's Cafe"
         Customer.begin_visit
     end
-
+#Customer
     def self.begin_visit
         prompt = TTY::Prompt.new
         name = prompt.ask("What's your name?")
@@ -16,7 +16,7 @@ class Customer < ActiveRecord::Base
         customer = Customer.find_by(name: name)
         customer.prompt_order
     end
-
+#Order
     def prompt_order
         prompt = TTY::Prompt.new
         response = prompt.yes?("#{name}, would you like something to drink?")
@@ -26,7 +26,7 @@ class Customer < ActiveRecord::Base
             self.goodbye
         end
     end
-
+#Drink
     def begin_creation
         prompt = TTY::Prompt.new 
         a = prompt.yes?("Do you know what you'd like?")
@@ -42,7 +42,7 @@ class Customer < ActiveRecord::Base
             end
         end
     end
-   
+#Drink
     def make_drink
         prompt = TTY::Prompt.new(symbols: {marker: '→'})
         selection = prompt.select("Choose your coffee:", Drink.coffees)
@@ -67,7 +67,7 @@ class Customer < ActiveRecord::Base
         end
         self.confirm_drink(drink)
     end
-
+#Drink
     def confirm_drink(drink)
         prompt = TTY::Prompt.new
         if drink.milk == nil && drink.flavor == nil
@@ -85,7 +85,7 @@ class Customer < ActiveRecord::Base
             self.change_drink(drink)
         end
     end
-
+#Drink
     def change_drink(drink)
         prompt = TTY::Prompt.new
         response = prompt.yes?("Would you like to change any of your choices?")
@@ -95,7 +95,7 @@ class Customer < ActiveRecord::Base
             self.confirmed_order(drink)
         end
     end
-
+#Drink
     def update_drink(drink)
         prompt = TTY::Prompt.new
         edit = prompt.select("Sure, what would you like to change?") do |menu|
@@ -119,18 +119,17 @@ class Customer < ActiveRecord::Base
         elsif edit == 2
             flavor = prompt.ask("What would you like?")
             drink.change_flavor(flavor)
-        else
-            self.confirm_drink(drink)
         end
+            self.confirm_drink(drink)
     end
-    
+#Order
     def confirmed_order(drink)
         Order.create(customer_id: self.id, drink_id: drink.id)
         order = Order.find_by(drink_id: drink.id)
         puts Rainbow("Order ##{order.id} for #{order.customer.name} is ready! A #{drink.type_of_coffee}.").green
         self.goodbye
     end
-
+#CLI
     def goodbye
         prompt = TTY::Prompt.new
         confirm = prompt.yes?("Can we get you anything else?")
