@@ -4,7 +4,7 @@
 Joe's Cafe simulates a transaction to create a coffee order.
 
 ## How to video
-[![Video](https://i.imgur.com/I7xLfip.png)]({https://youtu.be/uLrfAVl2FYQ})
+[![Video](https://i.imgur.com/I7xLfip.png)](https://youtu.be/uLrfAVl2FYQ)
 
 ## Tutorial
 
