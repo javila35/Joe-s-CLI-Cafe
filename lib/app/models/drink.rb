@@ -55,14 +55,17 @@ class Drink < ActiveRecord::Base
 #methods so customers can change their options.
     def change_milk(option)
         self.milk = option
+        self.save
     end
 
     def change_coffee(option)
         self[:type_of_coffee] = option
+        self.save
     end
 
     def change_flavor(option)
         self.flavor = option
+        self.save
     end
 
 #methods so customers can learn about the coffee options
@@ -104,25 +107,6 @@ class Drink < ActiveRecord::Base
         drink.confirm_drink(customer)
     end
 
-    def confirm_drink(customer)
-        prompt = TTY::Prompt.new
-        if self.milk == nil && self.flavor == nil
-            confirm = prompt.yes?("I have a #{self.type_of_coffee}. Is that right?")
-        elsif self.milk == nil && self.flavor
-            confirm = prompt.yes?("I have a #{self.flavor} #{self.type_of_coffee}. Is that right?")
-        elsif self.flavor == nil && self.milk
-            confirm = prompt.yes?("I have a #{self.type_of_coffee} with #{self.milk}. Is that right?")
-        else
-            confirm = prompt.yes?("I have a #{self.flavor} #{self.type_of_coffee} with #{self.milk}. Is that right?")
-        end
-        if confirm
-            ##confirmed order needs to be finished then I think I'm done??
-            self.confirmed_order(drink)
-        else
-            self.change_drink(customer)
-        end
-    end
-
     def change_drink(customer)
         prompt = TTY::Prompt.new
         edit = prompt.select("Sure, what would you like to change?") do |menu|
@@ -150,5 +134,26 @@ class Drink < ActiveRecord::Base
             Order.prompt_order(customer)
         end
             self.confirm_drink(customer)
+    end
+
+    def confirm_drink(customer)
+        prompt = TTY::Prompt.new
+        if self.milk == nil && self.flavor == nil
+            confirm = prompt.yes?("I have a #{self.type_of_coffee}. Is that right?")
+        elsif self.milk == nil && self.flavor
+            confirm = prompt.yes?("I have a #{self.flavor} #{self.type_of_coffee}. Is that right?")
+        elsif self.flavor == nil && self.milk
+            confirm = prompt.yes?("I have a #{self.type_of_coffee} with #{self.milk}. Is that right?")
+        else
+            confirm = prompt.yes?("I have a #{self.flavor} #{self.type_of_coffee} with #{self.milk}. Is that right?")
+        end
+        if confirm
+            # binding.pry
+            order = Order.find_by(drink_id: self.id, customer_id: customer.id)
+            ##confirmed order needs to be finished then I think I'm done??
+            order.confirmed_order
+        else
+            self.change_drink(customer)
+        end
     end
 end

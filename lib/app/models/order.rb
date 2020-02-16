@@ -23,10 +23,9 @@ class Order < ActiveRecord::Base
         end
     end
 
-    def confirmed_order(drink)
-        Order.create(customer_id: self.id, drink_id: drink.id)
-        order = Order.find_by(drink_id: drink.id)
-        puts Rainbow("Order ##{order.id} for #{order.customer.name} is ready! A #{drink.type_of_coffee}.").green
+    def confirmed_order
+        puts self.info
+        # puts Rainbow("Order ##{order.id} for #{order.customer.name} is ready! A #{drink.type_of_coffee}.").green
         CommandLineInterface.goodbye(customer)
     end
 end
