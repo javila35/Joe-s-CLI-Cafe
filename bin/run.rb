@@ -4,4 +4,4 @@ c1 = Customer.all.sample
 d1 = Drink.all.sample
 order = Order.all.sample
 
-Customer.welcome
+CommandLineInterface.welcome

@@ -74,4 +74,81 @@ class Drink < ActiveRecord::Base
             puts str
         end
     end
+
+    def self.make_drink(customer, order)
+        prompt = TTY::Prompt.new
+        drink = Drink.new
+        selection = prompt.select("Choose your coffee:", Drink.coffees)
+        drink.type_of_coffee = selection
+        if selection == "Espresso" || selection == "Drip Coffee"
+            Drink.learn_about_coffee
+        end
+        if selection == "Latte" || selection == "Macchiato"
+            milk = prompt.select("What type of milk would you like?", Drink.milks)
+            drink.milk = milk
+        else
+            milk_response = prompt.yes?("Would you like milk?")
+            if milk_response
+                milk = prompt.select("What type of milk would you like?", Drink.milks)
+                drink.milk = milk
+            end
+        end
+        flavor_response = prompt.yes?("Would you like to add a flavor?")
+        if flavor_response
+            flavor = prompt.select("Which flavor?", Drink.flavors)
+            drink.flavor = flavor
+        end
+        drink.save
+        order.drink_id = drink.id
+        order.save
+        drink.confirm_drink(customer)
+    end
+
+    def confirm_drink(customer)
+        prompt = TTY::Prompt.new
+        if self.milk == nil && self.flavor == nil
+            confirm = prompt.yes?("I have a #{self.type_of_coffee}. Is that right?")
+        elsif self.milk == nil && self.flavor
+            confirm = prompt.yes?("I have a #{self.flavor} #{self.type_of_coffee}. Is that right?")
+        elsif self.flavor == nil && self.milk
+            confirm = prompt.yes?("I have a #{self.type_of_coffee} with #{self.milk}. Is that right?")
+        else
+            confirm = prompt.yes?("I have a #{self.flavor} #{self.type_of_coffee} with #{self.milk}. Is that right?")
+        end
+        if confirm
+            ##confirmed order needs to be finished then I think I'm done??
+            self.confirmed_order(drink)
+        else
+            self.change_drink(customer)
+        end
+    end
+
+    def change_drink(customer)
+        prompt = TTY::Prompt.new
+        edit = prompt.select("Sure, what would you like to change?") do |menu|
+            menu.choice 'Coffee', 0
+            menu.choice 'Milk', 1
+            menu.choice 'Flavor', 2
+            menu.choice 'Everything', 3
+            menu.choice 'Nevermind'
+        end
+        if edit == 0
+            coffee = prompt.ask("What would you like?")
+            self.change_coffee(coffee)
+        elsif edit == 1
+            milk = prompt.ask("What would you like?")
+            self.change_milk(milk)
+        elsif edit == 2
+            flavor = prompt.ask("What would you like?")
+            self.change_flavor(flavor)
+        elsif edit == 3
+            #find and destroy order, and drink... Restart.
+            order = Order.find_by(customer_id == customer.id && drink_id == self.id)
+            puts Rainbow("You're #{drink.type_of_coffee} was cancelled.").red
+            Order.destroy(order.id)
+            Drink.destroy(drink.id)
+            Order.prompt_order(customer)
+        end
+            self.confirm_drink(customer)
+    end
 end
